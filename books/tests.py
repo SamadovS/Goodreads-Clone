@@ -16,7 +16,7 @@ class BooksTestCase(TestCase):
         Book.objects.create(title='Book2', description='Description2', isbn='111111')
         Book.objects.create(title='Book3', description='Description3', isbn='666666')
 
-        response = self.client.get(reverse("books:list"))
+        response = self.client.get(reverse("books:list") + "?page_size=2")
 
         books = Book.objects.all()
         for book in books:
