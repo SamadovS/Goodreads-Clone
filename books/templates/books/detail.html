@@ -10,9 +10,19 @@
           </div>
 
           <div class="col-6 ms-4">
-              <h3>
-                  {{ book.title }}
-              </h3>
+              <h3> {{ book.title }} </h3>
+
+          <span class="fst-italic">
+              Authored by
+              {% for book_author in book.bookauthor_set.all %}
+                    {% if forloop.last %}
+                        {{ book_author.author.full_name }}
+                    {% else %}
+                        {{ book_author.author.full_name }},
+                    {% endif %}
+              {% endfor %}
+          </span>
+
 
               <p>
                   {{ book.description }}
@@ -33,15 +43,6 @@
         </div>
     </div>
 
-<!--    <div class="row mb-4">-->
-<!--        <div class="col-6">-->
-<!--            <form method="post" action="{% url 'books:reviews' book.id %}">-->
-<!--                {% csrf_token %}-->
-<!--                {{ review_form | crispy }}-->
-<!--                <button class="btn btn-success">Add review</button>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
 
     {% if book.bookreview_set.exists %}
         <h4>Reviews</h4> <hr>
@@ -61,21 +62,6 @@
     {% endif %}
 
 
-<!--    {% if book.bookreview_set.exist %}-->
-<!--        <h4>Reviews</h4><hr>-->
 
-<!--        {% for review in book.bookreview_set.all %}-->
-<!--            <div class="row mb-3">-->
-<!--                <div class="col-1 me-2">-->
-<!--                    <img class="small-profile-pic" src="{{ review.user.profile_picture.url }}">-->
-<!--                </div>-->
-
-<!--                <div class="col-7">-->
-<!--                    <b>{{ review.user.username }}</b> rated it {{ review.stars_given }} stars <span class="fw-lighter">{{ review.created_at }}</span>-->
-<!--                    <p class="mt-2 font-monospace">{{ review.comment }}</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        {% endfor %}-->
-<!--    {% endif %}-->
 
 {% endblock %}
