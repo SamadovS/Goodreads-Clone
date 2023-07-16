@@ -3,7 +3,7 @@ from django import forms
 from users.models import CustomUser
 
 
-class UserCreateView(forms.ModelForm):
+class UserCreateForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ('username', 'first_name', 'last_name', 'email', 'password')

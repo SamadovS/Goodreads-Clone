@@ -2,32 +2,32 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 from django.shortcuts import render, redirect
 from django.views import View
 
-from users.forms import UserCreateView, UserUpdateForm
+from users.forms import UserCreateForm, UserUpdateForm
 
 
 class RegisterView(View):
     def get(self, request):
-        create_form = UserCreateView()
+        create_form = UserCreateForm()
         context = {
-            'form':create_form
+            "form": create_form
         }
         return render(request, "users/register.html", context)
 
     def post(self, request):
-        create_form = UserCreateView(data=request.POST)
+        create_form = UserCreateForm(data=request.POST)
 
         if create_form.is_valid():
             create_form.save()
             return redirect('users:login')
         else:
             context = {
-                'form': create_form
+                "form": create_form
             }
-            return render(request, 'users/register.html', context)
+            return render(request, "users/register.html", context)
+
 
 class LoginView(View):
     def get(self, request):
@@ -41,7 +41,9 @@ class LoginView(View):
         if login_form.is_valid():
             user = login_form.get_user()
             login(request, user)
-            messages.success(request, "You have succesfully logged in. ")
+
+            messages.success(request, "You have successfully logged in.")
+
             return redirect("books:list")
         else:
             return render(request, "users/login.html", {"login_form": login_form})
@@ -49,15 +51,15 @@ class LoginView(View):
 
 class ProfileView(LoginRequiredMixin, View):
     def get(self, request):
-
-        return render(request, "users/profile.html", {"user":request.user})
+        return render(request, "users/profile.html", {"user": request.user})
 
 
 class LogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
-        messages.info(request, "You have succesfully logged out. ")
+        messages.info(request, "You have successfully logged out.")
         return redirect("landing_page")
+
 
 class ProfileUpdateView(LoginRequiredMixin, View):
     def get(self, request):
@@ -73,10 +75,8 @@ class ProfileUpdateView(LoginRequiredMixin, View):
 
         if user_update_form.is_valid():
             user_update_form.save()
-            messages.success(request, "You have successfully update your profile")
+            messages.success(request, "You have successfully updated your profile.")
+
             return redirect("users:profile")
 
         return render(request, "users/profile_edit.html", {"form": user_update_form})
-
-
-
